@@ -72,11 +72,15 @@ WSGI_APPLICATION = 'testbackend.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# mongodb+srv://capstoneuser:<CS486C>@capstone.emrcg.mongodb.net/<Capstone>?retryWrites=true&w=majority
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'Capstone',
+        'HOST': 'mongodb+srv://capstoneuser:CS486C@capstone.emrcg.mongodb.net/Capstone?retryWrites=true&w=majority',
+        'USER': 'capstoneuser',
+        'PASSWORD': 'CS486C',
     }
 }
 
