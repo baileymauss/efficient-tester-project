@@ -1,0 +1,7 @@
+{
+  "name": "efficientTesterApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
