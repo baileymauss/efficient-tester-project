@@ -78,9 +78,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'Capstone',
-        'HOST': 'mongodb+srv://capstoneuser:CS486C@capstone.emrcg.mongodb.net/Capstone?retryWrites=true&w=majority',
-        'USER': 'capstoneuser',
-        'PASSWORD': 'CS486C',
+         'CLIENT': {
+           'host': 'mongodb+srv://capstoneuser:CS486C@capstone.emrcg.mongodb.net/Capstone?retryWrites=true&w=majority',
+           'username': 'capstoneuser',
+           'password': 'CS486C',
+        }
     }
 }
 
