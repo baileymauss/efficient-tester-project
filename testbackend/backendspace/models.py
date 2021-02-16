@@ -29,3 +29,45 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = ('User')
         verbose_name_plural = ('Users')
+        
+
+class Protocol(models.Model):
+	PLATE_TYPES = [
+		(96),
+		(384), 
+	]
+	name = models.CharField('Protocol Name', max_length=120)
+	date_created = models.DateField()
+	date_used = models.DateTimeField('Date Last Used')
+	creator_ID = models.UUIDField()
+	plate_type = models.PositiveSmallIntegerField(choices=PLATE_TYPES)
+	num_samples = models.PositiveSmallIntegerField()
+	#TODO: num_plates needs to be calculated based on plate_type and num_samples
+    #num_plates = 
+	suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
+    #need model linkage
+	#experiments_used_in = 
+	active_status = models.BooleanField(('active'), default=True)
+    #need model linkage
+	#lab_group = 
+	
+class Experiment(models.Model):
+	#need model linkage
+    #protocol_used = 
+	associated_images = models.ImageField()
+	completed_status = models.BooleanField(('completed'), default=False) 
+	user_notes = models.TextField()
+	step_num = models.PositiveSmallIntegerField()
+	plaintext_data = models.FileField()
+	
+class LabGroup(models.Model):
+	name = models.CharField('Lab Group Name', max_length=120)
+	group_id = models.UUIDField()
+    #need model linkage
+	#member_list = 
+    #need to get token
+	#token = 
+    #need model linkage
+	#admin_user = 
+    #need model linkage
+	#protocols = 
