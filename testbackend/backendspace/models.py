@@ -45,15 +45,13 @@ class Protocol(models.Model):
 	#TODO: num_plates needs to be calculated based on plate_type and num_samples
     #num_plates = 
 	suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
-    #need model linkage
+    #need model linkage, this field may be redundant
 	#experiments_used_in = 
 	active_status = models.BooleanField(('active'), default=True)
-    #need model linkage
-	#lab_group = 
+        lab_group = models.ForeignKey(LabGroup, on_delete=models.CASCADE)
 	
 class Experiment(models.Model):
-	#need model linkage
-    #protocol_used = 
+	protocol_used = models.ForeignKey(Protocol, on_delete=models.CASCADE)
 	associated_images = models.ImageField()
 	completed_status = models.BooleanField(('completed'), default=False) 
 	user_notes = models.TextField()
@@ -63,11 +61,9 @@ class Experiment(models.Model):
 class LabGroup(models.Model):
 	name = models.CharField('Lab Group Name', max_length=120)
 	group_id = models.UUIDField()
-    #need model linkage
-	#member_list = 
+        member_list = models.ManyToManyField(User)
     #need to get token
 	#token = 
-    #need model linkage
-	#admin_user = 
-    #need model linkage
+        admin_user = models.ManyToManyField(User)
+    #need model linkage, this field may be redundant
 	#protocols = 
