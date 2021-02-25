@@ -22,6 +22,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     #pushToken = models.CharField(max_length=100, null=True, blank=True,db_index=True)
     is_active = models.BooleanField(('active'), default=True)
     #valid = models.BooleanField(default=True)
+    labgroup = models.ManyToManyField('LabGroup')
 
     objects = UserManager()
     USERNAME_FIELD = 'email'
@@ -29,41 +30,42 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = ('User')
         verbose_name_plural = ('Users')
-        
 
-class Protocol(models.Model):
-	PLATE_TYPES = [
-		(96),
-		(384), 
-	]
-	name = models.CharField('Protocol Name', max_length=120)
-	date_created = models.DateField()
-	date_used = models.DateTimeField('Date Last Used')
-	creator_ID = models.UUIDField()
-	plate_type = models.PositiveSmallIntegerField(choices=PLATE_TYPES)
-	num_samples = models.PositiveSmallIntegerField()
-	#TODO: num_plates needs to be calculated based on plate_type and num_samples
-    #num_plates = 
-	suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
-    #need model linkage, this field may be redundant
-	#experiments_used_in = 
-	active_status = models.BooleanField(('active'), default=True)
-        lab_group = models.ForeignKey(LabGroup, on_delete=models.CASCADE)
-	
+
+class Protocols(models.Model):
+    PLATE_TYPES = [
+        (1, '96'),
+        (2, '384'),
+    ]
+    name = models.CharField('Protocol Name', max_length=120)
+    date_created = models.DateField()
+    date_used = models.DateTimeField('Date Last Used')
+    creator_ID = models.UUIDField()
+    plate_type = models.PositiveSmallIntegerField(choices=PLATE_TYPES)
+    num_samples = models.PositiveSmallIntegerField()
+    suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
+    active_status = models.BooleanField(('active'), default=True)
+    lab_group = models.ForeignKey('LabGroup', on_delete=models.CASCADE)
+
 class Experiment(models.Model):
-	protocol_used = models.ForeignKey(Protocol, on_delete=models.CASCADE)
-	associated_images = models.ImageField()
-	completed_status = models.BooleanField(('completed'), default=False) 
-	user_notes = models.TextField()
-	step_num = models.PositiveSmallIntegerField()
-	plaintext_data = models.FileField()
-	
+    protocol_used = models.ForeignKey('Protocols', on_delete=models.CASCADE)
+    associated_images = models.ImageField()
+    completed_status = models.BooleanField(('completed'), default=False)
+    user_notes = models.TextField()
+    step_num = models.PositiveSmallIntegerField()
+    plaintext_data = models.FileField()
+
 class LabGroup(models.Model):
-	name = models.CharField('Lab Group Name', max_length=120)
-	group_id = models.UUIDField()
-        member_list = models.ManyToManyField(User)
-    #need to get token
-	#token = 
-        admin_user = models.ManyToManyField(User)
-    #need model linkage, this field may be redundant
-	#protocols = 
+    name = models.CharField('Lab Group Name', max_length=120)
+    group_id = models.UUIDField()
+    member_list = models.ManyToManyField(User, through='GroupMembership', related_name='labgroups')
+    #admin_user = models.ManyToManyField('self')
+
+class GroupMembership(models.Model):
+    ROLE_CHOICE = (
+    ('1', 'Admin'),
+    ('2', 'Member'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    group = models.ForeignKey(LabGroup, on_delete=models.CASCADE)
+    role = models.CharField(choices=ROLE_CHOICE, default='2', max_length=1)
