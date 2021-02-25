@@ -1,0 +1,53 @@
+<ion-menu side="start" content-id="main-content">
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-button [routerLink]="['/protocols']">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          <ion-label>Protocols</ion-label>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button [routerLink]="['/settings']">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>Profile</ion-label>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-card color="success">
+      <ion-card-header>
+        <ion-card-subtitle>Application!</ion-card-subtitle>
+        <ion-card-title>Efficient Tester</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        This is made for Lab Purposes only.
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</div>

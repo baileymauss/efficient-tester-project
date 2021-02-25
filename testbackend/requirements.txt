@@ -5,5 +5,8 @@ pymongo[tls,srv]==3.11.2
 djangorestframework
 django-filter
 
+pillow==8.1.0
 djoser
 djangorestframework_simplejwt
+
+django-cors-middleware

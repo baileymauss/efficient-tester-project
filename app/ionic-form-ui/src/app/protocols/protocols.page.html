@@ -1,0 +1,92 @@
+<ion-menu side="start" content-id="main-content">
+  <ion-header>
+    <ion-toolbar translucent>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-button [routerLink]="['/main']">
+          <ion-icon name="home-outline" slot="start"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button [routerLink]="['/protocols']">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>Profile</ion-label>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Protocols</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-item>
+      <ion-label position="fixed">Tests</ion-label>
+      <ion-input [(ngModel)]="newItem.tests"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Well Size</ion-label>
+      <ion-input [(ngModel)]="newItem.size"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Name</ion-label>
+      <ion-input [(ngModel)]="newItem.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="fixed">Percentage</ion-label>
+      <ion-input [(ngModel)]="newItem.value"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" (click)="addItem()">Add Protocol!</ion-button>
+
+    <ion-list #mylist>
+
+      <ion-list-header>
+        <ion-label>My Protocols</ion-label>
+      </ion-list-header>
+
+      <ion-item-sliding *ngFor="let item of items">
+
+        <ion-item>
+          <ion-label text-wrap>
+            <h3>{{ item.tests }}</h3>
+            <h3>{{ item.size }}</h3>
+            <h3>{{ item.title }}</h3>
+            <ion-text color="secondary">
+              <p>{{ item.value}}</p>
+            </ion-text>
+            <p>{{ item.modified | date:'short'}}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="secondary" (click)="deleteItem(item)">Delete</ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+
+    </ion-list>
+
+  </ion-content>
+</div>

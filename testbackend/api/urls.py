@@ -6,5 +6,8 @@ from api.views import *
 urlpatterns = [
     path('users/', UserListCreateView.as_view(), name='users_list'),
     path('user/<uuid:pk>/',  UserDetailView.as_view(), name='user_detail'),
+    path('experiments/', ExperimentListCreateView.as_view(), name='experiments_list'),
+    path('protocols/', ProtocolsListCreateView.as_view(), name='protocols_list'),
+    path('labgroups/', LabGroupListCreateView.as_view(), name='labgroups_list'),
     path('', include(router.urls))
 ]
