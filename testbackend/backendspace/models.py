@@ -45,15 +45,15 @@ class Protocols(models.Model):
     num_samples = models.PositiveSmallIntegerField()
     suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
     active_status = models.BooleanField(('active'), default=True)
-    lab_group = models.ForeignKey('LabGroup', on_delete=models.CASCADE)
+    lab_group = models.ForeignKey('LabGroup', on_delete=models.CASCADE, blank=True)
 
 class Experiment(models.Model):
     protocol_used = models.ForeignKey('Protocols', on_delete=models.CASCADE)
-    associated_images = models.ImageField()
+    associated_images = models.ImageField(blank=True)
     completed_status = models.BooleanField(('completed'), default=False)
-    user_notes = models.TextField()
+    user_notes = models.TextField(blank=True)
     step_num = models.PositiveSmallIntegerField()
-    plaintext_data = models.FileField()
+    plaintext_data = models.FileField(blank=True)
 
 class LabGroup(models.Model):
     name = models.CharField('Lab Group Name', max_length=120)
