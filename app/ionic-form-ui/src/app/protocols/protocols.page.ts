@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform, ToastController, IonList} from '@ionic/angular';
 import { StorageService, Item } from 'src/app/services/storage.service';
+import { ApiDjangoService } from '../services/api-django.service';
 
 @Component({
   selector: 'app-protocols',
@@ -17,7 +18,7 @@ export class ProtocolsPage implements OnInit{
 
   @ViewChild('mylist') mylist: IonList;
 
-  constructor(private storageService: StorageService, private plt: Platform, private toastController: ToastController, private authService: AuthenticationService, private router: Router) {
+  constructor(private ApiService: ApiDjangoService, private plt: Platform, private toastController: ToastController, private authService: AuthenticationService, private router: Router) {
     this.plt.ready().then(() => {
       this.loadItems();
     });
@@ -26,20 +27,24 @@ export class ProtocolsPage implements OnInit{
   addItem(){
     this.newItem.modified = Date.now();
     this.newItem.id = Date.now();
+	this.newItem.created = Date.now();
+	this.newItem.active = True;
+	this.newItem.creator_ID = localStorage.getItem(userID);
 
-    this.storageService.addItem(this.newItem).then(item => {
+	//replace this with get method from service.ts
+    this.ApiService.createProtocol(this.newItem).then(item => {
       this.newItem = <Item>{};
-      this.showToast('Item added!')
+      //this.showToast('Item added!')
       this.loadItems();
     });
   }
 
   loadItems(){
-    this.storageService.getItems().then(items => {
+    this.ApiService.getProtocols().then(items => {
       this.items = items;
     });
   }
-
+/**
   updateItem(item: Item){
     item.title = 'UPDATED: ${item.title}';
     item.modified = Date.now();
@@ -66,7 +71,7 @@ export class ProtocolsPage implements OnInit{
     });
     toast.present();
   }
- 
+ **/
   async logout() {
     await this.authService.logout();
     this.router.navigateByUrl('/', { replaceUrl: true });
