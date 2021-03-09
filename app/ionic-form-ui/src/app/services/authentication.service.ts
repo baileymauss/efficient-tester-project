@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, tap, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, from, Observable, Subject } from 'rxjs';
+import { ApiDjangoService } from '../services/api-django.service';
  
 import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
@@ -38,6 +39,13 @@ export class AuthenticationService {
         })
     };
 
+	//store userid in local storage
+	let key = 'userID';
+	let queryPath = '?email=' + this.credentials.email;
+	let currentUser = this.apiService.findUser(queryPath);
+	let currentUserID = currentUser.id;
+	localStorage.setItem(key, JSON.stringify(currentUserID));
+	
     return this.http.post(`http://127.0.0.1:8000/api/users/`, credentials, options).pipe(
       map((data: any) => data.token),
       switchMap(token => {
@@ -47,10 +55,13 @@ export class AuthenticationService {
         this.isAuthenticated.next(true);
       })
     )
+	
   }
  
   logout(): Promise<void> {
     this.isAuthenticated.next(false);
+	//clear local storage
+	localStorage.clear();
     return Storage.remove({key: TOKEN_KEY});
   }
 }
