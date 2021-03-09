@@ -13,7 +13,13 @@
         </ion-button>
       </ion-item>
       <ion-item>
-        <ion-button [routerLink]="['/protocols']">
+        <ion-button [routerLink]="['/experiments']">
+          <ion-icon name="create-outline" slot="start"></ion-icon>
+          <ion-label>Experiments</ion-label>
+        </ion-button>
+      </ion-item>
+      <ion-item>
+        <ion-button [routerLink]="['/settings']">
           <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>Profile</ion-label>
         </ion-button>
@@ -46,7 +52,10 @@
 
     <ion-item>
       <ion-label position="fixed">Well Size</ion-label>
-      <ion-input [(ngModel)]="newItem.size"></ion-input>
+      <ion-select placeholder="Select One">
+        <ion-select-option [(ngModel)]="newItem.size" value="96">96</ion-select-option>
+        <ion-select-option [(ngModel)]="newItem.size" value="384">384</ion-select-option>
+      </ion-select>
     </ion-item>
 
     <ion-item>
@@ -55,7 +64,7 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="fixed">Percentage</ion-label>
+      <ion-label position="fixed">Positivity %</ion-label>
       <ion-input [(ngModel)]="newItem.value"></ion-input>
     </ion-item>
 
@@ -68,7 +77,6 @@
       </ion-list-header>
 
       <ion-item-sliding *ngFor="let item of items">
-
         <ion-item>
           <ion-label text-wrap>
             <h3>{{ item.tests }}</h3>
@@ -82,7 +90,7 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="secondary" (click)="deleteItem(item)">Delete</ion-item-option>
+          <ion-item-option color="secondary">Delete</ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
 
