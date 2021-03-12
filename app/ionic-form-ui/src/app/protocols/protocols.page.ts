@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Platform, ToastController, IonList} from '@ionic/angular';
 import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
+import {myID} from 'src/app/services/authentication.service';
 
 @Component({
   selector: 'app-protocols',
@@ -12,39 +13,88 @@ import { ApiDjangoService } from '../services/api-django.service';
 })
 export class ProtocolsPage implements OnInit{
 
-  items: Item[] = [];
+  protocolCredentials = { name: '', plateType: '', numSamples: '', posRate: ''};
 
-  newItem: Item = <Item>{};
+  infoAboutMe : any;
+
+  creatorID='';
+
+  protocols: Protocol[] = [];
+
+  newItem: Protocol = <Protocol>{};
 
   @ViewChild('mylist') mylist: IonList;
 
-  constructor(private ApiService: ApiDjangoService, private plt: Platform, private toastController: ToastController, private authService: AuthenticationService, private router: Router) {
+  constructor(private storageService: StorageService, 
+    private plt: Platform,
+    private ApiService: ApiDjangoService, 
+    private toastController: ToastController, 
+    private authService: AuthenticationService, 
+    private router: Router) {
+ 
     this.plt.ready().then(() => {
-      this.loadItems();
+      this.ApiService.getProtocols();
     });
+    
   }
 
-  addItem(){
-    this.newItem.modified = Date.now();
-    this.newItem.id = Date.now();
-	this.newItem.created = Date.now();
-	this.newItem.active = True;
-	this.newItem.creator_ID = localStorage.getItem(userID);
-
-	//replace this with get method from service.ts
-    this.ApiService.createProtocol(this.newItem).then(item => {
+  addProtocol(){
+    if (this.ApiService.networkConnected) {
+      this.ApiService.showLoading();
+      //let queryPath = '?name=' + this.protocolCredentials.name + "&suspected_pos_rate=" + this.protocolCredentials.posRate;
+      //this.ApiService.findProtocol(queryPath).subscribe((listProtocol) => {
+          //this.ApiService.stopLoading()
+          //console.log(JSON.stringify(listProtocol))
+          //if (listProtocol) {
+            //let nbProtocolFound = listProtocol["count"]
+            //if (nbProtocolFound==0){
+              console.log(myID);
+              let protocolToCreate = {
+                "name": this.protocolCredentials.name,
+                "creator_ID": myID,
+                "plate_type": this.protocolCredentials.plateType,
+                "num_samples": this.protocolCredentials.numSamples,
+                "suspected_pos_rate": this.protocolCredentials.posRate,
+                "active_status": true
+              }
+  
+              this.ApiService.createProtocol(protocolToCreate).subscribe((res) => {
+                if (res) {
+                  console.log(res)
+                }
+                else {
+                  this.ApiService.stopLoading();
+                  this.ApiService.showError("An error occured while creating a Protocol")
+                }
+              });
+            //}
+            //else{
+            //  this.ApiService.showError("A Protocol already exists for this name and positive rate!");
+            //}
+          //}
+          //else {
+            
+          //  this.ApiService.showError("An error occured while registering")
+         
+          //}
+      //});
+    }
+  }
+    /** 
+    this.storageService.addItem(this.newItem).then(item => {
       this.newItem = <Item>{};
       //this.showToast('Item added!')
       this.loadItems();
     });
-  }
+  } **/
 
   loadItems(){
-    this.ApiService.getProtocols().then(items => {
-      this.items = items;
+    this.ApiService.getProtocols().then(protocols => {
+      this.protocols = protocols;
     });
   }
-/**
+
+  /**
   updateItem(item: Item){
     item.title = 'UPDATED: ${item.title}';
     item.modified = Date.now();
@@ -71,7 +121,7 @@ export class ProtocolsPage implements OnInit{
     });
     toast.present();
   }
- **/
+  **/
   async logout() {
     await this.authService.logout();
     this.router.navigateByUrl('/', { replaceUrl: true });
