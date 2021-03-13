@@ -13,19 +13,19 @@ import {myID} from 'src/app/services/authentication.service';
 })
 export class ExperimentsPage implements OnInit {
 
-	experimentCredentials = { name: '', creatorID: '', protocolID: '', completed: '', stepNum: ''};
+  experimentCredentials = { stepNum: '', creatorID: '', protocolID: ''};
+  
+  selectedItem?: Item;
 
-	infoAboutMe : any;
+  infoAboutMe : any;
 
-	creatorID='';
-	
-	protocolID='';
+  creatorID='';
 
-	experiments: Experiment[] = [];
+  items: Item[] = [];
 
-	newItem: Experiment = <Experiment>{};
+  newItem: Item = <Item>{};
 
-	@ViewChild('mylist') mylist: IonList;
+  @ViewChild('mylist') mylist: IonList;
 
   constructor(private storageService: StorageService, 
     private plt: Platform,
@@ -33,64 +33,18 @@ export class ExperimentsPage implements OnInit {
     private toastController: ToastController, 
     private authService: AuthenticationService, 
     private router: Router) {
- 
+     
     this.plt.ready().then(() => {
-      this.ApiService.getProtocols();
+      this.loadItems();
     });
     
   }
   
-    addExperiment(){
-    if (this.ApiService.networkConnected) {
-      this.ApiService.showLoading();
-      //let queryPath = '?name=' + this.protocolCredentials.name + "&suspected_pos_rate=" + this.protocolCredentials.posRate;
-      //this.ApiService.findProtocol(queryPath).subscribe((listProtocol) => {
-          //this.ApiService.stopLoading()
-          //console.log(JSON.stringify(listProtocol))
-          //if (listProtocol) {
-            //let nbProtocolFound = listProtocol["count"]
-            //if (nbProtocolFound==0){
-              console.log(myID);
-              let experimentToCreate = {
-                "name": this.experimentCredentials.name,
-                "creator_ID": myID,
-                "protocolID": this.experimentCredentials.plateType,
-                "completed": false,
-                "stepNum": 1
-              }
-  
-              this.ApiService.createExperiment(experimentToCreate).subscribe((res) => {
-                if (res) {
-                  console.log(res)
-                }
-                else {
-                  this.ApiService.stopLoading();
-                  this.ApiService.showError("An error occured while creating an experiment")
-                }
-              });
-            //}
-            //else{
-            //  this.ApiService.showError("A Protocol already exists for this name and positive rate!");
-            //}
-          //}
-          //else {
-            
-          //  this.ApiService.showError("An error occured while registering")
-         
-          //}
-      //});
-    }
-  }
-  
     loadItems(){
-    this.ApiService.getExperiments().then(experiments => {
-      this.experiments = experiments;
+    this.ApiService.getExperiments().subscribe(items => {
+      this.items = items["results"];
+	  console.log(items["results"]);
     });
-  }
-  
-    async logout() {
-    await this.authService.logout();
-    this.router.navigateByUrl('/', { replaceUrl: true });
   }
 
   ngOnInit() {
