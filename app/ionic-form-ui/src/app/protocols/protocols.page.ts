@@ -14,14 +14,16 @@ import {myID} from 'src/app/services/authentication.service';
 export class ProtocolsPage implements OnInit{
 
   protocolCredentials = { name: '', plateType: '', numSamples: '', posRate: ''};
+  
+  selectedItem?: Item;
 
   infoAboutMe : any;
 
   creatorID='';
 
-  protocols: Protocol[] = [];
+  items: Item[] = [];
 
-  newItem: Protocol = <Protocol>{};
+  newItem: Item = <Item>{};
 
   @ViewChild('mylist') mylist: IonList;
 
@@ -31,9 +33,9 @@ export class ProtocolsPage implements OnInit{
     private toastController: ToastController, 
     private authService: AuthenticationService, 
     private router: Router) {
- 
+     
     this.plt.ready().then(() => {
-      this.ApiService.getProtocols();
+      this.loadItems();
     });
     
   }
@@ -80,17 +82,32 @@ export class ProtocolsPage implements OnInit{
       //});
     }
   }
+  
+  redirect() {
+    this.router.navigateByUrl("/experiments");
+   }
+  
+  onSelect(item: Item): void {
+	  this.selectedItem = item;
+	  this.redirect();
+  }
+  
     /** 
+    this.newItem.modified = Date.now();
+    this.newItem.id = Date.now();
+
     this.storageService.addItem(this.newItem).then(item => {
       this.newItem = <Item>{};
       //this.showToast('Item added!')
       this.loadItems();
     });
-  } **/
+  }
+  **/
 
   loadItems(){
-    this.ApiService.getProtocols().then(protocols => {
-      this.protocols = protocols;
+    this.ApiService.getProtocols().subscribe(items => {
+      this.items = items["results"];
+	  console.log(items["results"]);
     });
   }
 
