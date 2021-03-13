@@ -45,45 +45,44 @@
   </ion-header>
 
   <ion-content>
-    <ion-item>
-      <ion-label position="fixed">Tests</ion-label>
-      <ion-input [(ngModel)]="newItem.tests"></ion-input>
-    </ion-item>
+    <form (ngSubmit)="addProtocol()" #registerForm="ngForm">
+      <ion-item>
+        <ion-label position="fixed">Samples</ion-label>
+        <ion-input type="number" name="numSamples" [(ngModel)]="protocolCredentials.numSamples"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="fixed">Well Size</ion-label>
-      <ion-select placeholder="Select One">
-        <ion-select-option [(ngModel)]="newItem.size" value="96">96</ion-select-option>
-        <ion-select-option [(ngModel)]="newItem.size" value="384">384</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Well Size</ion-label>
+        <ion-input type="number" name="posRate" [(ngModel)]="protocolCredentials.plateType"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="fixed">Name</ion-label>
-      <ion-input [(ngModel)]="newItem.title"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Name</ion-label>
+        <ion-input type="text" name="name" [(ngModel)]="protocolCredentials.name"></ion-input>
+      </ion-item>
 
-    <ion-item>
-      <ion-label position="fixed">Positivity %</ion-label>
-      <ion-input [(ngModel)]="newItem.value"></ion-input>
-    </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Positivity %</ion-label>
+        <ion-input type="number" name="posRate" [(ngModel)]="protocolCredentials.posRate"></ion-input>
+      </ion-item>
 
-    <ion-button expand="full" (click)="addItem()">Add Protocol!</ion-button>
-
+      <ion-button expand="full" type="submit" >Add Protocol!</ion-button>
+    </form>
+    
     <ion-list #mylist>
 
       <ion-list-header>
         <ion-label>My Protocols</ion-label>
       </ion-list-header>
 
-      <ion-item-sliding *ngFor="let item of items">
+      <ion-item-sliding *ngFor="let item of items" (click)="onSelect(item)">
         <ion-item>
           <ion-label text-wrap>
-            <h3>{{ item.tests }}</h3>
-            <h3>{{ item.size }}</h3>
-            <h3>{{ item.title }}</h3>
+            <h3>{{ item.name }}</h3>
+            <h3>{{ item.plate_type }}</h3>
+            <h3>{{ item.num_samples }}</h3>
             <ion-text color="secondary">
-              <p>{{ item.value}}</p>
+              <p>{{ item.suspected_pos_rate}}</p>
             </ion-text>
             <p>{{ item.modified | date:'short'}}</p>
           </ion-label>
