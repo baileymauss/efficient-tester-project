@@ -6,6 +6,8 @@ import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import {myID} from 'src/app/services/authentication.service';
 
+export var protocolID:int;
+
 @Component({
   selector: 'app-protocols',
   templateUrl: './protocols.page.html',
@@ -20,6 +22,8 @@ export class ProtocolsPage implements OnInit{
   infoAboutMe : any;
 
   creatorID='';
+  
+  protocolID = '0';
 
   items: Item[] = [];
 
@@ -89,6 +93,9 @@ export class ProtocolsPage implements OnInit{
   
   onSelect(item: Item): void {
 	  this.selectedItem = item;
+	  console.log(item["id"]);
+	  protocolID = item["id"];
+      //this.apiService.setLocalData("id",{"id": protocolID})
 	  this.redirect();
   }
   
