@@ -5,6 +5,7 @@ import { Platform, ToastController, IonList} from '@ionic/angular';
 import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import {myID} from 'src/app/services/authentication.service';
+import {protocolID} from 'src/app/protocols/protocols.page.ts';
 
 @Component({
   selector: 'app-experiments',
@@ -20,6 +21,8 @@ export class ExperimentsPage implements OnInit {
   infoAboutMe : any;
 
   creatorID='';
+  
+  //protocolID='';
 
   items: Item[] = [];
 
@@ -42,9 +45,16 @@ export class ExperimentsPage implements OnInit {
   
     loadItems(){
     this.ApiService.getExperiments().subscribe(items => {
-      this.items = items["results"];
-	  console.log(items["results"]);
+      if(items.protocol_used == protocolID){
+		this.items = items["results"];
+		console.log(items["results"]);
+	  }
     });
+  }
+  
+   async logout() {
+    await this.authService.logout();
+    this.router.navigateByUrl('/', { replaceUrl: true });
   }
 
   ngOnInit() {
