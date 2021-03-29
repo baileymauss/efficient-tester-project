@@ -69,15 +69,18 @@ class Protocols(models.Model):
     #lab_group = models.ForeignKey(LabGroup, on_delete=models.CASCADE)
 
 class Experiment(models.Model):
+    STATUS_OPTIONS = [
+        (1, 'True'),
+        (2, 'False'),
+    ]
     protocol_used = models.ForeignKey('Protocols', on_delete=models.CASCADE)
-    completed_status = models.BooleanField(('completed'), default=False)
+    completed_status = models.CharField(max_length=30, choices=STATUS_OPTIONS)
     user_notes = JSONField(blank=True)
     step_num = models.PositiveSmallIntegerField()
     plaintext_data = models.FileField(blank=True)
-	#you will need to pip install jsonfield for this to work
+    #you will need to pip install jsonfield for this to work
     current_data = JSONField(blank=True)
     date_last_accessed = models.DateTimeField(auto_now=True)
-	
 
 class LabGroup(models.Model):
     name = models.CharField('Lab Group Name', max_length=120)
