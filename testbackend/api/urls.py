@@ -10,5 +10,6 @@ urlpatterns = [
     path('experiment/<uuid:pk>/',  ExperimentDetailView.as_view(), name='experiment_detail'),
     path('protocols/', ProtocolsListCreateView.as_view(), name='protocols_list'),
     path('labgroups/', LabGroupListCreateView.as_view(), name='labgroups_list'),
+	path('groupmembership/', GroupMembershipListCreateView.as_view(), name='groupmembership_list'),
     path('', include(router.urls))
 ]
