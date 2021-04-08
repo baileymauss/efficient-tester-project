@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ExperimentsPageRoutingModule } from './experiments-routing.module';
 
 import { ExperimentsPage } from './experiments.page';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,9 @@ import { ExperimentsPage } from './experiments.page';
     IonicModule,
     ExperimentsPageRoutingModule
   ],
-  declarations: [ExperimentsPage]
+  declarations: [ExperimentsPage],
+  providers: [
+    InAppBrowser
+  ]
 })
 export class ExperimentsPageModule {}
