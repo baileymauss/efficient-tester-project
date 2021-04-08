@@ -82,7 +82,7 @@ class Experiment(models.Model):
 class LabGroup(models.Model):
     name = models.CharField('Lab Group Name', max_length=120)
     group_id = models.UUIDField()
-    member_list = models.ManyToManyField(User, through='GroupMembership', related_name='labgroups')
+    member_list = models.ManyToManyField(User, through='GroupMembership', related_name='labgroups', blank=True)
     #admin_user = models.ManyToManyField('self')
 
 class GroupMembership(models.Model):

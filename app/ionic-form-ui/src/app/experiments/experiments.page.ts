@@ -6,6 +6,7 @@ import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import {myID} from 'src/app/services/authentication.service';
+import {protocolID} from 'src/app/protocols/protocols.page.ts';
 
 @Component({
   selector: 'app-experiments',
@@ -20,6 +21,9 @@ export class ExperimentsPage implements OnInit {
 
   infoAboutMe : any;
 
+  creatorID='';
+  
+  //protocolID='';
   items: Item[] = [];
 
   newItem: Item = <Item>{};

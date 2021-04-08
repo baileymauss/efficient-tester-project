@@ -15,7 +15,7 @@ export class ApiDjangoService {
 
   public tokenSSO: String = "";
     networkConnected: boolean = true;
-    virtualHostName: string = 'http://127.0.0.1:8000'
+    virtualHostName: string = 'http://127.0.0.1:8000';
     appName: string = '';
     apiPrefix = "/api"
     loader: any;
@@ -35,6 +35,8 @@ export class ApiDjangoService {
     refreshtokenUrl = this.virtualHostName +  "/auth/jwt/refresh/";
     urlPwdOublie = this.virtualHostName + "/account/reset_password/";
     getCustomUserUrl : string =''
+	getProtocolUrl = this.virtualHostName + this.apiPrefix + "/protocols/"
+	getExperimentUrl = this.virtualHostName + this.apiPrefix + "/experiments/"
 
   constructor(private http:HttpClient,
     public loadingController: LoadingController,
@@ -179,6 +181,108 @@ export class ApiDjangoService {
       // At this point make a request to your backend  
       console.log("on appelle BACKEND encoded url " + url);
       this.http.post(url, user, options)
+        .subscribe(res => {
+          observer.next(res);
+          observer.complete();
+        }, error => {
+          observer.next();
+          observer.complete();
+          console.log(error);// Error getting the data
+        });
+    });
+  }
+  
+getProtocols() {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    let url = this.getProtocolUrl;
+
+    return Observable.create(observer => {
+      // At this point make a request to your backend  
+      console.log("on appelle BACKEND encoded url " + url);
+      this.http.get(url, options)
+        .pipe(retry(1))
+        .subscribe(res => {
+          observer.next(res);
+          observer.complete();
+        }, error => {
+          observer.next();
+          observer.complete();
+          console.log(error);// Error getting the data
+        });
+    });
+  }
+
+createProtocol(protocol){
+    
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    
+    let url = this.getProtocolUrl;
+
+    return Observable.create(observer => {
+      // At this point make a request to your backend  
+      console.log("on appelle BACKEND encoded url " + url);
+      this.http.post(url, protocol, options)
+        .pipe(retry(1))
+        .subscribe(res => {
+          observer.next(res);
+          observer.complete();
+        }, error => {
+          observer.next();
+          observer.complete();
+          console.log(error);// Error getting the data
+        });
+    });
+  }
+  
+getExperiments() {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    let url = this.getExperimentUrl;
+
+    return Observable.create(observer => {
+      // At this point make a request to your backend  
+      console.log("on appelle BACKEND encoded url " + url);
+      this.http.get(url, options)
+        .pipe(retry(1))
+        .subscribe(res => {
+          observer.next(res);
+          observer.complete();
+        }, error => {
+          observer.next();
+          observer.complete();
+          console.log(error);// Error getting the data
+        });
+    });
+  }
+  
+createExperiment(experiment){
+    
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    
+    let url = this.getExperimentUrl;
+
+    return Observable.create(observer => {
+      // At this point make a request to your backend  
+      console.log("on appelle BACKEND encoded url " + url);
+      this.http.post(url, experiment, options)
+        .pipe(retry(1))
         .subscribe(res => {
           observer.next(res);
           observer.complete();
