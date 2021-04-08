@@ -19,3 +19,8 @@ class LabGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = LabGroup
         fields = '__all__'
+		
+class roupMembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GroupMembership
+        fields = '__all__'
