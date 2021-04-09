@@ -28,7 +28,7 @@ export class ApiDjangoService {
     getUserUrl = this.virtualHostName + this.apiPrefix + "/users/"
     getProtocolUrl = this.virtualHostName + this.apiPrefix + "/protocols/"
     getLabGroupUrl = this.virtualHostName + this.apiPrefix + "/labgroups/"
-	getLabGroupUrl = this.virtualHostName + this.apiPrefix + "/groupmembership/"
+	getLabGroupMembershipUrl = this.virtualHostName + this.apiPrefix + "/groupmembership/"
 	getExperimentUrl = this.virtualHostName + this.apiPrefix + "/experiments/"
     getAuthUserUrl = this.virtualHostName + "/auth/users/";
     //getMyUrl = this.virtualHostName + "/auth/users/me/";
