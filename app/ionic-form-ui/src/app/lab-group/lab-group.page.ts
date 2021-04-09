@@ -6,10 +6,10 @@ import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import {myID} from 'src/app/services/authentication.service';
 import { ModalController } from '@ionic/angular';
-import {GroupPopupComponent} from 'src/app/group-popup.component';
-import {AddgroupmemberComponent} from 'src/app/addgroupmember.component';
+import {GroupPopupComponent} from 'src/app/group-popup/group-popup.component';
+import {AddgroupmemberComponent} from 'src/app/addgroupmember/addgroupmember.component';
 
-export var:currentGroup:number;
+export var currentGroup:number;
 
 @Component({
   selector: 'app-lab-group',
@@ -18,8 +18,6 @@ export var:currentGroup:number;
 })
 export class LabGroupPage implements OnInit {
   labGroupCredentials = { myName: ''};
-  
-  currentGroup?: number;
 
   infoAboutMe : any;
 
@@ -39,7 +37,7 @@ export class LabGroupPage implements OnInit {
     private toastController: ToastController, 
     private authService: AuthenticationService, 
     private router: Router,
-	private modalController: modalController) {
+	private modalCtrl: ModalController) {
      
     this.plt.ready().then(() => {
       this.loadItems();
@@ -80,19 +78,19 @@ export class LabGroupPage implements OnInit {
   }
   
   async addMember(){
-	  const modal = await this.modalController.create(){
+	  const modal = await this.modalCtrl.create({
 		  component: AddgroupmemberComponent
-	  }
+	  })
 	  await modal.present();
   }
   
-  async groupPopup(currentGroup){
-	  const modal = await this.modalController.create(){
+  async groupPopup(groupName){
+	  const modal = await this.modalCtrl.create({
 		  component: GroupPopupComponent,
-		  ComponentProps: {
-			  groupName: this.currentGroup
+		  componentProps: {
+			  groupName: groupName
 		  }
-	  }
+	  })
 	  await modal.present();
   }
   
@@ -101,8 +99,8 @@ export class LabGroupPage implements OnInit {
    }
   
   onSelect(item: Item): void {
-	  this.currentGroup = item.id;
-	  this.groupPopup(this.currentGroup);
+	  currentGroup = item.id;
+	  this.groupPopup(currentGroup);
 	  //this.redirect();
   }
   
@@ -119,13 +117,14 @@ export class LabGroupPage implements OnInit {
 
   loadItems(){
     this.ApiService.getLabGroups().subscribe(items => {
-      for (let index in items["results"]){
-        for(let i in items["results"][index]["member_list"]) {
-			let someUser = items["results"][index]["member_list"][i];
-			if (someUser == myID){
-				this.displayList.push(items["results"][index]);
-			}
-		}
+        for (let index in items["results"]) {
+            for (let i in items["results"][index]["member_list"]) {
+                let someUser = items["results"][index]["member_list"][i];
+                if (someUser == myID) {
+                    this.displayList.push(items["results"][index]);
+                }
+            }
+        }
     });
   }
 
