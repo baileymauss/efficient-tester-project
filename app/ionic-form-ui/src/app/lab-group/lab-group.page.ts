@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
 import {GroupPopupComponent} from 'src/app/group-popup.component';
 import {AddgroupmemberComponent} from 'src/app/addgroupmember.component';
 
-export var:currentGroup:Item;
+export var:currentGroup:number;
 
 @Component({
   selector: 'app-lab-group',
@@ -19,7 +19,7 @@ export var:currentGroup:Item;
 export class LabGroupPage implements OnInit {
   labGroupCredentials = { myName: ''};
   
-  currentGroup?: Item;
+  currentGroup?: number;
 
   infoAboutMe : any;
 
@@ -101,7 +101,7 @@ export class LabGroupPage implements OnInit {
    }
   
   onSelect(item: Item): void {
-	  this.currentGroup = item;
+	  this.currentGroup = item.id;
 	  this.groupPopup(this.currentGroup);
 	  //this.redirect();
   }
