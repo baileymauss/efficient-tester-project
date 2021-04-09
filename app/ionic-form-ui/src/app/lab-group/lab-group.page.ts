@@ -5,6 +5,11 @@ import { Platform, ToastController, IonList} from '@ionic/angular';
 import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import {myID} from 'src/app/services/authentication.service';
+import { ModalController } from '@ionic/angular';
+import {GroupPopupComponent} from 'src/app/group-popup.component';
+import {AddgroupmemberComponent} from 'src/app/addgroupmember.component';
+
+export var:currentGroup:Item;
 
 @Component({
   selector: 'app-lab-group',
@@ -14,13 +19,15 @@ import {myID} from 'src/app/services/authentication.service';
 export class LabGroupPage implements OnInit {
   labGroupCredentials = { myName: ''};
   
-  selectedItem?: Item;
+  currentGroup?: Item;
 
   infoAboutMe : any;
 
   group_id='';
 
   items: Item[] = [];
+  
+  displayList: Item[] = [];
 
   newItem: Item = <Item>{};
 
@@ -31,7 +38,8 @@ export class LabGroupPage implements OnInit {
     private ApiService: ApiDjangoService, 
     private toastController: ToastController, 
     private authService: AuthenticationService, 
-    private router: Router) {
+    private router: Router,
+	private modalController: modalController) {
      
     this.plt.ready().then(() => {
       this.loadItems();
@@ -71,13 +79,31 @@ export class LabGroupPage implements OnInit {
     }
   }
   
+  async addMember(){
+	  const modal = await this.modalController.create(){
+		  component: AddgroupmemberComponent
+	  }
+	  await modal.present();
+  }
+  
+  async groupPopup(currentGroup){
+	  const modal = await this.modalController.create(){
+		  component: GroupPopupComponent,
+		  ComponentProps: {
+			  groupName: this.currentGroup
+		  }
+	  }
+	  await modal.present();
+  }
+  
   redirect() {
     this.router.navigateByUrl("/experiments");
    }
   
   onSelect(item: Item): void {
-	  this.selectedItem = item;
-	  this.redirect();
+	  this.currentGroup = item;
+	  this.groupPopup(this.currentGroup);
+	  //this.redirect();
   }
   
     /** 
@@ -93,8 +119,13 @@ export class LabGroupPage implements OnInit {
 
   loadItems(){
     this.ApiService.getLabGroups().subscribe(items => {
-      this.items = items["results"];
-	  console.log(items["results"]);
+      for (let index in items["results"]){
+        for(let i in items["results"][index]["member_list"]) {
+			let someUser = items["results"][index]["member_list"][i];
+			if (someUser == myID){
+				this.displayList.push(items["results"][index]);
+			}
+		}
     });
   }
 
