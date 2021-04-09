@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Platform, ToastController, IonList } from '@ionic/angular';
 import { ApiDjangoService } from '../services/api-django.service';
-import {myID} from 'src/app/services/authentication.service';
-import {groupID} from 'src/app/lab-group/lab-group.page';
+import { myID } from 'src/app/services/authentication.service';
+import { StorageService, Item } from 'src/app/services/storage.service';
+import {currentGroup} from 'src/app/lab-group/lab-group.page';
 
 @Component({
   selector: 'app-addgroupmember',
@@ -16,7 +18,8 @@ export class AddgroupmemberComponent implements OnInit {
 
   constructor(
   private modalController: ModalController,
-  private ApiService: ApiDjangoService) { 
+  private ApiService: ApiDjangoService,
+  private plt: Platform) { 
   
   this.plt.ready().then(() => {
       this.loadItems();
@@ -33,7 +36,7 @@ export class AddgroupmemberComponent implements OnInit {
               console.log(myID);
               let labgroupMembershipToCreate = {
                 "user": myID,
-                "group": groupID,
+                "group": currentGroup,
               }
   
               this.ApiService.createLabGroupMembership(labgroupMembershipToCreate).subscribe((res) => {
