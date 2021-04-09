@@ -66,7 +66,7 @@
         <ion-label>Lab Groups</ion-label>
       </ion-list-header>
 
-      <ion-item-sliding *ngFor="let item of items" (click)="onSelect(item)">
+      <ion-item-sliding *ngFor="let item of displayList" (click)="onSelect(item)">
         <ion-item>
           <ion-label text-wrap>
             <h3>Name: {{ item.name }}</h3>
