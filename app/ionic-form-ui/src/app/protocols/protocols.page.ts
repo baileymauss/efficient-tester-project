@@ -25,6 +25,8 @@ export class ProtocolsPage implements OnInit{
   creatorID='';
 
   items: Item[] = [];
+  
+  displayList: Item[] = [];
 
   newItem: Item = <Item>{};
 
@@ -105,8 +107,15 @@ export class ProtocolsPage implements OnInit{
 
   loadItems(){
     this.ApiService.getProtocols().subscribe(items => {
-      this.items = items["results"];
-	  console.log(items["results"]);
+      for (let index in items["results"]){
+        let currentItem = items["results"][index]["lab_group"];
+        //console.log(currentItem)
+		 	  if(currentItem == currentGroup){
+          console.log(currentItem)
+				  this.displayList.push(items["results"][index]);
+        }
+    }
+    console.log(this.displayList)
     });
   }
 
