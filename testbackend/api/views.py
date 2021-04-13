@@ -84,5 +84,5 @@ class GroupMembershipListCreateView(generics.ListCreateAPIView):
 			get:
 			   Search or get GroupMembership
 	"""
-	queryset = GroupMembership.objects.get_queryset().order_by('name')
+	queryset = GroupMembership.objects.get_queryset().order_by('group')
 	serializer_class = GroupMembershipSerializer
