@@ -57,12 +57,34 @@ export class LabGroupPage implements OnInit {
               this.ApiService.createLabGroups(labgroupToCreate).subscribe((res) => {
                 if (res) {
                   console.log(res)
+				  currentGroup = myID;
                 }
                 else {
                   this.ApiService.stopLoading();
                   this.ApiService.showError("An error occured while creating a Protocol")
                 }
-              });
+				
+				
+              }
+			  
+			  let groupMembershipToCreate = {
+				  "user": myID,
+				  "group": this.currentGroup, 
+				  "role": 1,
+			  }
+			  this.ApiService.createLabGroupMembership(groupMembershipToCreate).subscribe((res) => {
+                if (res) {
+                  console.log(res)
+                }
+                else {
+                  this.ApiService.stopLoading();
+                  this.ApiService.showError("An error occured while creating a Protocol")
+                }
+				
+				
+              }
+			  
+			  );
             //}
             //else{
             //  this.ApiService.showError("A Protocol already exists for this name and positive rate!");
