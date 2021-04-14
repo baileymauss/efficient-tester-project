@@ -8,6 +8,9 @@ import {AddgroupmemberComponent} from 'src/app/addgroupmember/addgroupmember.com
   styleUrls: ['./group-popup.component.scss']
 })
 export class GroupPopupComponent implements OnInit {
+	
+	groupID;
+	
 	constructor(private modalController: ModalController) { }
 
     async close(){
@@ -15,8 +18,11 @@ export class GroupPopupComponent implements OnInit {
 	}
 	
   async addMember(){
-	  const modal = await this.modalCtrl.create({
-		  component: AddgroupmemberComponent
+	  const modal = await this.modalController.create({
+		  component: AddgroupmemberComponent,
+		  componentProps: {
+			  groupID: this.groupID
+		  }
 	  })
 	  await modal.present();
   }
