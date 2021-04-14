@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import {AddgroupmemberComponent} from 'src/app/addgroupmember/addgroupmember.component';
 
 @Component({
   selector: 'app-group-popup',
