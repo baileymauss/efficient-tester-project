@@ -13,6 +13,13 @@ export class GroupPopupComponent implements OnInit {
 	  await this.modalController.dismiss();
 	}
 	
+  async addMember(){
+	  const modal = await this.modalCtrl.create({
+		  component: AddgroupmemberComponent
+	  })
+	  await modal.present();
+  }
+	
 	
   
   
