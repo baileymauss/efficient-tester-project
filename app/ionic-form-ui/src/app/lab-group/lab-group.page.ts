@@ -101,7 +101,10 @@ export class LabGroupPage implements OnInit {
   
   async addMember(){
 	  const modal = await this.modalCtrl.create({
-		  component: AddgroupmemberComponent
+		  component: AddgroupmemberComponent,
+		  componentProps: {
+			  groupID: currentGroup
+		  }
 	  })
 	  await modal.present();
   }
