@@ -56,6 +56,7 @@ export class ProtocolsPage implements OnInit{
                 "num_samples": this.protocolCredentials.numSamples,
                 "suspected_pos_rate": this.protocolCredentials.posRate,
                 "active_status": true,
+				"lab_group": this.currentGroup,
 				"num_experiments": 0
               }
   
