@@ -1,15 +1,7 @@
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Platform, ToastController, IonList} from '@ionic/angular';
-import { StorageService, Item } from 'src/app/services/storage.service';
-import { ApiDjangoService } from '../services/api-django.service';
-import {myID} from 'src/app/services/authentication.service';
-import { ModalController } from '@ionic/angular';
-import {GroupPopupComponent} from 'src/app/group-popup/group-popup.component';
-import {AddgroupmemberComponent} from 'src/app/addgroupmember/addgroupmember.component';
+nent} from 'src/app/addgroupmember/addgroupmember.component';
 
 export var currentGroup:number;
+
 
 @Component({
   selector: 'app-lab-group',
