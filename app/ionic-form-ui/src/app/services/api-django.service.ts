@@ -28,7 +28,7 @@ export class ApiDjangoService {
     getUserUrl = this.virtualHostName + this.apiPrefix + "/users/"
     getProtocolUrl = this.virtualHostName + this.apiPrefix + "/protocols/"
     getLabGroupUrl = this.virtualHostName + this.apiPrefix + "/labgroups/"
-	getLabGroupMembershipUrl = this.virtualHostName + this.apiPrefix + "/groupmembership/"
+	getLabGroupUrl = this.virtualHostName + this.apiPrefix + "/groupmembership/"
 	getExperimentUrl = this.virtualHostName + this.apiPrefix + "/experiments/"
     getAuthUserUrl = this.virtualHostName + "/auth/users/";
     //getMyUrl = this.virtualHostName + "/auth/users/me/";
@@ -406,6 +406,31 @@ createLabGroupMembership(labgroupmembership){
     // At this point make a request to your backend  
     console.log("on appelle BACKEND encoded url " + url);
     this.http.post(url, labgroupmembership, options)
+      .pipe(retry(1))
+      .subscribe(res => {
+        observer.next(res);
+        observer.complete();
+      }, error => {
+        observer.next();
+        observer.complete();
+        console.log(error);// Error getting the data
+      });
+  });
+}
+
+getLabGroupMembership() {
+  const options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
+
+  let url = this.getLabGroupMembershipUrl;
+
+  return Observable.create(observer => {
+    // At this point make a request to your backend  
+    console.log("on appelle BACKEND encoded url " + url);
+    this.http.get(url, options)
       .pipe(retry(1))
       .subscribe(res => {
         observer.next(res);
