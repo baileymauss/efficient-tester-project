@@ -53,6 +53,43 @@ export class RegistrationPage implements OnInit {
               this.apiService.createUser(userToCreate).subscribe((resultat) => {
                 if (resultat) {
                   console.log(resultat)
+				  
+				  let labgroupToCreate = {
+					"name": resultat.username,
+				}
+  
+              this.apiService.createLabGroups(labgroupToCreate).subscribe((res) => {
+                if (res) {
+                    console.log(res)
+				    let currentGroup = res.id;
+					let userID = resultat.id;
+				  
+				    let groupMembershipToCreate = {
+				    "user": userID,
+				    "group": currentGroup, 
+				    "role": 1
+					}
+                    this.apiService.createLabGroupMembership(groupMembershipToCreate).subscribe((res) => {
+                        if (res) {
+                            console.log(res)
+                        }
+                        else {
+                            this.apiService.stopLoading();
+                            this.apiService.showError("An error occured while creating a Protocol");
+                        }
+
+
+                    }   
+                }
+                else {
+                  this.apiService.stopLoading();
+                  this.apiService.showError("An error occured while creating a Protocol")
+                }
+				
+				
+              }
+			  
+			  );
                 }
                 else {
                   this.apiService.stopLoading();
