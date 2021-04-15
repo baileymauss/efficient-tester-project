@@ -55,7 +55,8 @@ export class ProtocolsPage implements OnInit{
                 "plate_type": this.protocolCredentials.plateType,
                 "num_samples": this.protocolCredentials.numSamples,
                 "suspected_pos_rate": this.protocolCredentials.posRate,
-                "active_status": true
+                "active_status": true,
+				"num_experiments": 0
               }
   
               this.ApiService.createProtocol(protocolToCreate).subscribe((res) => {
