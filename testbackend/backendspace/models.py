@@ -72,6 +72,7 @@ class Protocols(models.Model):
     suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
     active_status = models.BooleanField(('active'), default=True)
     lab_group = models.ForeignKey(LabGroup, on_delete=models.CASCADE)
+    num_experiments = models.PositiveSmallIntegerField()
 
 class Experiment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
