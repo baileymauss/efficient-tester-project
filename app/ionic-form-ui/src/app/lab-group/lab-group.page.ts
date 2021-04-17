@@ -1,8 +1,14 @@
-nent} from 'src/app/addgroupmember/addgroupmember.component';
-
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Platform, ToastController, IonList} from '@ionic/angular';
+import { StorageService, Item } from 'src/app/services/storage.service';
+import { ApiDjangoService } from '../services/api-django.service';
+import {myID} from 'src/app/services/authentication.service';
+import { ModalController } from '@ionic/angular';
+import {GroupPopupComponent} from 'src/app/group-popup/group-popup.component';
+import {AddgroupmemberComponent} from 'src/app/addgroupmember/addgroupmember.component';
 export var currentGroup:number;
-
-
 @Component({
   selector: 'app-lab-group',
   templateUrl: './lab-group.page.html',
@@ -10,19 +16,13 @@ export var currentGroup:number;
 })
 export class LabGroupPage implements OnInit {
   labGroupCredentials = { myName: ''};
-
   infoAboutMe : any;
-
   group_id='';
-
   items: Item[] = [];
   
   displayList: Item[] = [];
-
   newItem: Item = <Item>{};
-
   @ViewChild('mylist') mylist: IonList;
-
   constructor(private storageService: StorageService, 
     private plt: Platform,
     private ApiService: ApiDjangoService, 
@@ -36,7 +36,6 @@ export class LabGroupPage implements OnInit {
     });
     
   }
-
   addLabGroup(){
     if (this.ApiService.networkConnected) {
       this.ApiService.showLoading();
@@ -64,8 +63,6 @@ export class LabGroupPage implements OnInit {
                             this.ApiService.stopLoading();
                             this.ApiService.showError("An error occured while creating a Protocol")
                         }
-
-
                     }   
                 }
                 else {
@@ -90,9 +87,10 @@ export class LabGroupPage implements OnInit {
       //});
     }
   }
-  
+
   async addMember(){
 	  const modal = await this.modalCtrl.create({
+		  component: AddgroupmemberComponent
 		  component: AddgroupmemberComponent,
 		  componentProps: {
 			  groupID: currentGroup
@@ -131,7 +129,6 @@ export class LabGroupPage implements OnInit {
     });
   }
   **/
-
   loadItems(){
     this.ApiService.getLabGroups().subscribe(items => {
         for (let index in items["results"]) {
@@ -144,7 +141,6 @@ export class LabGroupPage implements OnInit {
         }
     });
   }
-
   /**
   updateItem(item: Item){
     item.title = 'UPDATED: ${item.title}';
@@ -174,9 +170,6 @@ export class LabGroupPage implements OnInit {
     await this.authService.logout();
     this.router.navigateByUrl('/', { replaceUrl: true });
   }
-
   ngOnInit(){
-
   }
-
 }
