@@ -55,8 +55,7 @@ export class ExperimentsPage implements OnInit {
   
               this.ApiService.createExperiment(experimentToCreate).subscribe((res) => {
                 if (res) {
-                  console.log(res)
-		  res["protocol_used"]["num_experiments"] ++;
+                  console.log(res);
                   this.loadItems();
                 }
                 else {
