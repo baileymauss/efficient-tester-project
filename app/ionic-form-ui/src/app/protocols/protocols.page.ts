@@ -6,6 +6,7 @@ import { StorageService, Item } from 'src/app/services/storage.service';
 import { ApiDjangoService } from '../services/api-django.service';
 import {myID} from 'src/app/services/authentication.service';
 import {currentGroup} from 'src/app/lab-group/lab-group.page';
+import {groupName} from 'src/app/lab-group/lab-group.page';
 
 export var protocolID:number;
 
@@ -25,8 +26,6 @@ export class ProtocolsPage implements OnInit{
   creatorID='';
 
   items: Item[] = [];
-  
-  displayList: Item[] = [];
 
   newItem: Item = <Item>{};
 
@@ -37,8 +36,10 @@ export class ProtocolsPage implements OnInit{
     private ApiService: ApiDjangoService, 
     private toastController: ToastController, 
     private authService: AuthenticationService, 
-    private router: Router) {
+    private router: Router,
+	public currentGroupName : string = null) {
      
+	 this.currentGroupName = groupName;
     this.plt.ready().then(() => {
       this.loadItems();
     });
@@ -55,9 +56,7 @@ export class ProtocolsPage implements OnInit{
                 "plate_type": this.protocolCredentials.plateType,
                 "num_samples": this.protocolCredentials.numSamples,
                 "suspected_pos_rate": this.protocolCredentials.posRate,
-                "active_status": true,
-				"lab_group": this.currentGroup,
-				"num_experiments": 0
+                "active_status": true
               }
   
               this.ApiService.createProtocol(protocolToCreate).subscribe((res) => {
@@ -109,15 +108,8 @@ export class ProtocolsPage implements OnInit{
 
   loadItems(){
     this.ApiService.getProtocols().subscribe(items => {
-      for (let index in items["results"]){
-        let currentItem = items["results"][index]["lab_group"];
-        //console.log(currentItem)
-		 	  if(currentItem == currentGroup){
-          console.log(currentItem)
-				  this.displayList.push(items["results"][index]);
-        }
-    }
-    console.log(this.displayList)
+      this.items = items["results"];
+	  console.log(items["results"]);
     });
   }
 
