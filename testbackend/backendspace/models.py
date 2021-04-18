@@ -6,6 +6,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from backendspace.UserManager import UserManager
 from django.contrib.auth.hashers import get_hasher, identify_hasher
 from jsonfield import JSONField
+from django.db.models import Count
 import uuid
 
 # Models created Here.
@@ -72,7 +73,8 @@ class Protocols(models.Model):
     suspected_pos_rate = models.DecimalField(max_digits=4, decimal_places=2)
     active_status = models.BooleanField(('active'), default=True)
     lab_group = models.ForeignKey('LabGroup', on_delete=models.CASCADE)
-    num_experiments = models.PositiveSmallIntegerField()
+    num_experiments = models.Count('Experiment').all()
+	
 
 class Experiment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
